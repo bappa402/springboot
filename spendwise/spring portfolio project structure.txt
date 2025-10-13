@@ -1,0 +1,63 @@
+spendwise/
+├── pom.xml                          # Maven build file (or build.gradle)
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── com/
+│   │   │       └── spendwise/
+│   │   │           ├── SpendwiseApplication.java   # Main Spring Boot entry point
+│   │   │
+│   │   │           ├── config/                     # Security & app configuration
+│   │   │           │   ├── SecurityConfig.java
+│   │   │           │   ├── JwtAuthFilter.java
+│   │   │           │   ├── JwtUtil.java
+│   │   │           │   └── CorsConfig.java
+│   │   │
+│   │   │           ├── controller/                 # REST controllers (API endpoints)
+│   │   │           │   ├── AuthController.java
+│   │   │           │   ├── ExpenseController.java
+│   │   │           │   └── CategoryController.java
+│   │   │
+│   │   │           ├── dto/                        # Data Transfer Objects
+│   │   │           │   ├── LoginRequest.java
+│   │   │           │   ├── RegisterRequest.java
+│   │   │           │   ├── ExpenseDto.java
+│   │   │           │   └── CategoryDto.java
+│   │   │
+│   │   │           ├── entity/                     # JPA Entities
+│   │   │           │   ├── User.java
+│   │   │           │   ├── Expense.java
+│   │   │           │   └── Category.java
+│   │   │
+│   │   │           ├── repository/                 # Data access layer (JPA Repositories)
+│   │   │           │   ├── UserRepository.java
+│   │   │           │   ├── ExpenseRepository.java
+│   │   │           │   └── CategoryRepository.java
+│   │   │
+│   │   │           ├── service/                    # Business logic layer
+│   │   │           │   ├── AuthService.java
+│   │   │           │   ├── ExpenseService.java
+│   │   │           │   └── CategoryService.java
+│   │   │
+│   │   │           ├── exception/                  # Custom exceptions & handlers
+│   │   │           │   ├── ResourceNotFoundException.java
+│   │   │           │   ├── GlobalExceptionHandler.java
+│   │   │           │   └── BadRequestException.java
+│   │   │
+│   │   │           └── util/                       # Utility/helper classes
+│   │   │               ├── DateUtils.java
+│   │   │               └── ResponseBuilder.java
+│   │   │
+│   │   └── resources/
+│   │       ├── application.properties              # DB configs, JWT secret, etc.
+│   │       ├── static/                             # Static files (if using Thymeleaf)
+│   │       └── templates/                          # Thymeleaf templates (optional)
+│   │
+│   └── test/
+│       └── java/com/spendwise/
+│           ├── controller/
+│           │   └── ExpenseControllerTest.java
+│           └── service/
+│               └── ExpenseServiceTest.java
+│
+└── README.md
