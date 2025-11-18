@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Equation Solver</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2rem; }
+    input[type="text"] { width: 300px; padding:6px; }
+    .msgs { background:#f4f4f4; padding:12px; border-radius:6px; margin-top:12px; white-space:pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>Equation Solver</h1>
+  <p>Enter coefficients separated by spaces (e.g. <code>1 2 -10</code> for a quadratic).</p>
+
+  <form th:action="@{/solver}" method="post">
+    <label for="coeffs">Coefficients:</label><br/>
+    <input id="coeffs" name="coeffs" type="text" th:value="${input}" placeholder="e.g. 1 2 -10" required />
+    <button type="submit">Solve</button>
+  </form>
+
+  <div th:if="${messages != null}">
+    <h3>Result:</h3>
+    <div class="msgs">
+      <div th:each="m : ${messages}" th:text="${m}"></div>
+    </div>
+  </div>
+
+  <p><a th:href="@{/}">← Home</a></p>
+</body>
+</html>

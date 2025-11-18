@@ -1,0 +1,4 @@
+com\example\solver\service\EquationSolverService.class
+com\example\solver\controller\SolverController.class
+com\example\solver\SolverApplication.class
+com\example\solver\service\EquationSolverService$Result.class

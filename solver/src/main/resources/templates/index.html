@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Equation Solver Home</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2rem; }
+    a.button { background:#2d7; padding:8px 12px; border-radius:6px; text-decoration:none; color:#000; }
+  </style>
+</head>
+<body>
+  <h1>Welcome to the Equation Solver Page</h1>
+  <p>This small app solves linear and quadratic equations. Example coefficient input for a quadratic: <code>1 2 -10</code>.</p>
+  <p><a class="button" th:href="@{/solver}">Go to solver →</a></p>
+</body>
+</html>
