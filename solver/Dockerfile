@@ -1,32 +1,36 @@
-# ----------------------------
-# 1. BUILD STAGE
-# ----------------------------
-FROM maven:3.9.5-eclipse-temurin-17 AS build
+# -------------------------------
+# Stage 1: Build the jar
+# -------------------------------
+FROM maven:3.9.3-eclipse-temurin-17 AS build
 
+# Set working directory
 WORKDIR /app
 
-# copy pom first to cache dependencies
+# Copy Maven files first for caching
 COPY pom.xml .
-RUN mvn -q -e -B dependency:go-offline
+COPY mvnw .
+COPY .mvn .mvn
+RUN mvn dependency:go-offline
 
-# copy project source
+# Copy the source code
 COPY src ./src
 
-# build jar
-RUN mvn -q -e -B clean package -DskipTests
+# Build the jar
+RUN mvn clean package -DskipTests
 
+# -------------------------------
+# Stage 2: Run the app
+# -------------------------------
+FROM eclipse-temurin:17-jdk-jammy
 
-# ----------------------------
-# 2. RUNTIME STAGE
-# ----------------------------
-FROM eclipse-temurin:17-jre-alpine
-
+# Set working directory
 WORKDIR /app
 
-COPY --from=build /app/target/*.jar app.jar
+# Copy the jar from the build stage
+COPY --from=build /app/target/solver-0.0.1-SNAPSHOT.jar app.jar
 
-
-# RUN THE APP
-ENTRYPOINT ["sh", "-c", "java -jar /app.jar --server.port=$PORT"]
+# Expose default Spring Boot port (optional for Render)
 EXPOSE 8080
 
+# Use Render's dynamic PORT environment variable
+ENTRYPOINT ["sh", "-c", "java -jar /app/app.jar --server.port=$PORT"]
