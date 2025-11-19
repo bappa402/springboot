@@ -15,7 +15,7 @@
 
   <form th:action="@{/solver}" method="post">
     <label for="coeffs">Coefficients:</label><br/>
-    <input id="coeffs" name="coeffs" type="text" th:value="${input}" placeholder="e.g. 1 2 -10" required />
+    <input id="coeffs" name="coeffs" type="text" th:value="${input}" placeholder="e.g. 1 2 -10"  />
     <button type="submit">Solve</button>
   </form>
 
@@ -24,6 +24,8 @@
     <div class="msgs">
       <div th:each="m : ${messages}" th:text="${m}"></div>
     </div>
+    <P th:text="'solved by ' + ${name}"></P>
+    <p th:text="'solved on: ' + ${date}"></p>
   </div>
 
   <p><a th:href="@{/}">← Home</a></p>

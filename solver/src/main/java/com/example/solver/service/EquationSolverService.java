@@ -6,24 +6,15 @@ import java.util.List;
 
 public class EquationSolverService {
 
-    public static class Result {
-        public final boolean success;
-        public final List<String> messages;
-
-        public Result(boolean success, List<String> messages) {
-            this.success = success;
-            this.messages = messages;
-        }
-    }
-
     // ------------------------------------------------------------
     // MAIN ENTRY POINT
     // ------------------------------------------------------------
-    public Result solve(String input) {
+    public List<String> solve(String input) {
         List<String> msgs = new ArrayList<>();
+
         if (input == null || input.trim().isEmpty()) {
             msgs.add("Please enter coefficients separated by spaces.");
-            return new Result(false, msgs);
+            return msgs;
         }
 
         String[] parts = input.trim().split("\\s+");
@@ -34,31 +25,29 @@ public class EquationSolverService {
                 coeffs[i] = Double.parseDouble(parts[i]);
         } catch (NumberFormatException e) {
             msgs.add("Invalid number format.");
-            return new Result(false, msgs);
+            return msgs;
         }
 
         if (coeffs.length < 2) {
             msgs.add("At least two coefficients required for NR method.");
-            return new Result(false, msgs);
+            return msgs;
         }
 
-        // Normalize polynomial coefficients (highest degree first)
         double[] poly = Arrays.copyOf(coeffs, coeffs.length);
         msgs.add("Solving polynomial using Newton–Raphson method:");
         msgs.add(polynomialToString(poly));
 
         List<Double> roots = findAllRoots(poly, msgs);
 
-        for (int i = 0; i < roots.size(); i++) {
-            msgs.add(String.format("Root %d ≈ %.10f", i + 1, roots.get(i)));
-        }
-
         if (roots.isEmpty()) {
             msgs.add("Failed to find roots with Newton–Raphson (try different initial guess).");
-            return new Result(false, msgs);
+            return msgs;
         }
 
-        return new Result(true, msgs);
+        for (int i = 0; i < roots.size(); i++)
+            msgs.add(String.format("Root %d ≈ %.10f", i + 1, roots.get(i)));
+
+        return msgs;
     }
 
     // ------------------------------------------------------------
@@ -77,8 +66,6 @@ public class EquationSolverService {
                 break;
             }
             roots.add(root);
-
-            // Deflate polynomial (divide by (x - root))
             p = deflatePolynomial(p, root);
         }
 
@@ -89,7 +76,7 @@ public class EquationSolverService {
     // NEWTON–RAPHSON ITERATION
     // ------------------------------------------------------------
     private Double newtonRaphson(double[] poly) {
-        double x = 1.0;  // initial guess
+        double x = 1.0;
         double tol = 1e-10;
         int maxIter = 100;
 
@@ -107,7 +94,8 @@ public class EquationSolverService {
 
             x = xNew;
         }
-        return null; // failed to converge
+
+        return null;
     }
 
     // ------------------------------------------------------------
@@ -127,15 +115,14 @@ public class EquationSolverService {
         return (evaluate(poly, x + h) - evaluate(poly, x - h)) / (2 * h);
     }
 
-    // Polynomial deflation using synthetic division
     private double[] deflatePolynomial(double[] poly, double root) {
         int n = poly.length;
         double[] newPoly = new double[n - 1];
 
         newPoly[0] = poly[0];
-        for (int i = 1; i < newPoly.length; i++) {
+        for (int i = 1; i < newPoly.length; i++)
             newPoly[i] = poly[i] + newPoly[i - 1] * root;
-        }
+
         return newPoly;
     }
 
