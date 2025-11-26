@@ -20,6 +20,7 @@ public class ScoreController {
     public String scorePage(Model model) {
         // Add all saved scores to the model
         model.addAttribute("scores", scoreService.getAllScores());
+        model.addAttribute("avgScorePerSubject", scoreService.getAvgScorePerSubject());
         return "score"; // Thymeleaf template: score.html
     }
 

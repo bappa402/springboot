@@ -55,7 +55,7 @@ public class ScoreService {
 
     public List<Map<String, Object>> getAllScores() {
         List<Map<String, Object>> list = new ArrayList<>();
-        String sql = "SELECT name, subject, score FROM scoreboard ORDER BY id";
+        String sql = "select subject, name, score from scoreboard sb order by 1,3 desc;";
 
         try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement();
@@ -64,6 +64,33 @@ public class ScoreService {
             while (rs.next()) {
                 Map<String, Object> row = new HashMap<>();
                 row.put("name", rs.getString("name"));
+                row.put("subject", rs.getString("subject"));
+                row.put("score", rs.getInt("score"));
+                list.add(row);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    public List<Map<String, Object>> getAvgScorePerSubject() {
+        List<Map<String, Object>> list = new ArrayList<>();
+        String sql = """
+            select UPPER(subject) as subject, round(avg(score),2) as score
+            from scoreboard sb
+            group by UPPER(subject)
+            order by 2 desc;
+        """;
+
+        try (Connection conn = dataSource.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Map<String, Object> row = new HashMap<>();
                 row.put("subject", rs.getString("subject"));
                 row.put("score", rs.getInt("score"));
                 list.add(row);
