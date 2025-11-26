@@ -1,34 +1,87 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Equation Solver</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 2rem; }
-    input[type="text"] { width: 300px; padding:6px; }
-    .msgs { background:#f4f4f4; padding:12px; border-radius:6px; margin-top:12px; white-space:pre-wrap; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem;
+    }
+
+    input[type="text"] {
+      width: 300px;
+      padding: 6px;
+    }
+
+    .msgs {
+      background: #f4f4f4;
+      padding: 12px;
+      border-radius: 6px;
+      margin-top: 12px;
+      white-space: pre-wrap;
+    }
   </style>
 </head>
+
 <body>
   <h1>Equation Solver</h1>
   <p>Enter coefficients separated by spaces (e.g. <code>1 2 -10</code> for a quadratic).</p>
 
   <form th:action="@{/solver}" method="post">
-    <label for="coeffs">Coefficients:</label><br/>
-    <input id="coeffs" name="coeffs" type="text" th:value="${input}" placeholder="e.g. 1 2 -10"  />
+    <label for="coeffs">Coefficients:</label><br />
+    <input id="coeffs" name="coeffs" type="text" th:value="${input}" placeholder="e.g. 1 2 -10" />
     <button type="submit">Solve</button>
   </form>
 
   <div th:if="${messages != null}">
     <h3>Result:</h3>
+
+    <!-- Polynomial rendered by JS -->
+    <p id="poly"></p>
+
     <div class="msgs">
       <div th:each="m : ${messages}" th:text="${m}"></div>
     </div>
-    <P th:text="'solved by ' + ${name}"></P>
+    <p th:text="'solved by ' + ${name}"></p>
     <p th:text="'solved on: ' + ${date}"></p>
   </div>
 
   <p><a th:href="@{/}">← Home</a></p>
+
+  <script th:inline="javascript">
+    /*<![CDATA[*/
+    const polyArray = [[${ polynomial }]]; // raw coefficients passed from backend
+    const polyDiv = document.getElementById("poly");
+
+    if (polyArray && polyArray.length > 0) {
+      let polyStr = "P(x) = ";
+      polyArray.forEach((c, i) => {
+        if (c === 0) return; // skip zero coefficients
+        if (i !== polyArray.length && i > 0) {
+          if (c >= 0) {
+            polyStr += " + ";
+          }
+          else {
+
+            polyStr += " - ";
+          }
+        }
+
+        const power = polyArray.length - 1 - i;
+        if((c!=1 && c!=-1) || power===0){
+          polyStr += Math.abs(c);
+        }
+        if (power > 0) polyStr += "x<sup>" + power + "</sup>";
+
+      });
+      polyDiv.innerHTML = polyStr;
+    }
+    /*]]>*/
+  </script>
+
 </body>
+
 </html>

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -28,9 +29,14 @@ public class SolverController {
     @PostMapping("/solver")
     public String solveSubmit(@RequestParam("coeffs") String coeffs, Model model) {
         List<String> messages = solver.solve(coeffs);
+        // Convert input string to double[]
+        double[] poly = Arrays.stream(coeffs.trim().split("\\s+"))
+                .mapToDouble(Double::parseDouble)
+                .toArray();
 
         model.addAttribute("input", coeffs);
         model.addAttribute("messages", messages);
+        model.addAttribute("polynomial", poly);
         model.addAttribute("name", "bappa ");
         model.addAttribute("date", "20-NOV-2025");
 

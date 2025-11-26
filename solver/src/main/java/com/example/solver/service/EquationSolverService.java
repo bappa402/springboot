@@ -35,7 +35,7 @@ public class EquationSolverService {
 
         double[] poly = Arrays.copyOf(coeffs, coeffs.length);
         msgs.add("Solving polynomial using Newton–Raphson method:");
-        msgs.add(polynomialToString(poly));
+        //msgs.add(polynomialToString(poly));
 
         List<Double> roots = findAllRoots(poly, msgs);
 
@@ -56,13 +56,13 @@ public class EquationSolverService {
     private List<Double> findAllRoots(double[] poly, List<String> msgs) {
         int degree = poly.length - 1;
         List<Double> roots = new ArrayList<>();
+        System.out.println("findallroots called");
 
         double[] p = Arrays.copyOf(poly, poly.length);
 
         for (int i = 0; i < degree; i++) {
             Double root = newtonRaphson(p);
             if (root == null) {
-                msgs.add("Newton–Raphson failed to converge for a root.");
                 break;
             }
             roots.add(root);
@@ -126,14 +126,5 @@ public class EquationSolverService {
         return newPoly;
     }
 
-    private String polynomialToString(double[] p) {
-        StringBuilder sb = new StringBuilder("P(x) = ");
-        for (int i = 0; i < p.length; i++) {
-            int power = p.length - 1 - i;
-            sb.append(String.format("%.3f", p[i]));
-            if (power > 0) sb.append("x^").append(power);
-            if (i != p.length - 1) sb.append(" + ");
-        }
-        return sb.toString();
-    }
+  
 }
