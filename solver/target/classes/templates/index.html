@@ -2,21 +2,25 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8" />
+  
+  <title>Equation Solver</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Equation Solver Home</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 2rem; }
-    a.button { background:#2d7; padding:8px 12px; border-radius:6px; text-decoration:none; color:#000; }
-  </style>
+  <!-- Import generic CSS -->
+  <link rel="stylesheet" th:href="@{/css/styles.css}" />
 </head>
 <body>
-  <h1>Welcome to the Equation Solver Page</h1>
-  <p>This small app solves linear and quadratic equations. Example coefficient input for a quadratic: <code>1 2 -10</code>.</p>
-  <p><a class="button" th:href="@{/solver}">Go to solver →</a></p>
-  <br><br>
-  <p th:text="${title}">new attributes from developer, loading...</p>
-  <p><a th:href="@{/about}">About this application</a></p>
-  <p><a th:href="@{/score}">Go to Scoreboard</a></p>
+  <h1>Welcome to the Equation Solver</h1>
+  <p>This small app helps you solve linear and quadratic equations easily. 
+     Example quadratic coefficients: <code>1 2 -10</code>.</p>
 
+  <div class="buttons">
+    <a class="button" th:href="@{/solver}">Go to Solver</a>
+    <a class="button" th:href="@{/score}">View Scoreboard</a>
+    <a class="button" th:href="@{/about}">About</a>
+  </div>
+
+  <div class="info">
+    <p th:text="${title}">New attributes from developer, loading...</p>
+  </div>
 </body>
 </html>
