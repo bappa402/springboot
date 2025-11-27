@@ -4,6 +4,7 @@ import com.example.solver.service.ScoreService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -32,4 +33,11 @@ public class ScoreController {
         scoreService.saveScore(name, subject, score);
         return "redirect:/score"; // Redirect back to the score page
     }
+
+    @PostMapping("/score/delete/{id}")
+        public String deleteScore(@PathVariable Long id) {
+            scoreService.deleteById(id);
+            return "redirect:/score";
+        }
+
 }

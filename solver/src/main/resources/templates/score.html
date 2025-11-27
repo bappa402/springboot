@@ -27,8 +27,8 @@
     </form>
 
     <!-- Table to display all scores -->
-     <br><br>
-     <h4>Scoreboard, sorted by scores subjectwise</h4>
+    <br><br>
+    <h4>Scoreboard, sorted by scores subjectwise</h4>
     <table>
         <thead>
             <tr>
@@ -42,13 +42,20 @@
                 <td th:text="${s['subject']}"></td>
                 <td th:text="${s['name']}"></td>
                 <td th:text="${s['score']}"></td>
+                <td>
+                    <form th:action="@{/score/delete/{id}(id=${s.id})}" method="post">
+                        <button type="submit" style="background:none;border:none;padding:0;">
+                            <img th:src="@{/images/delete_icon2.png}" alt="Delete" class="bin-icon">
+                        </button>
+                    </form>
+                </td>
             </tr>
         </tbody>
     </table>
 
 
     <!-- Table to display subject wise average scores -->
-     <h4>Subject wise average score</h4>
+    <h4>Subject wise average score</h4>
     <table>
         <thead>
             <tr>

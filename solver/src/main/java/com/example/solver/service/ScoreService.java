@@ -53,9 +53,20 @@ public class ScoreService {
         }
     }
 
+    public void deleteById(Long id) {
+        String sql = "DELETE FROM scoreboard WHERE id = ?";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public List<Map<String, Object>> getAllScores() {
         List<Map<String, Object>> list = new ArrayList<>();
-        String sql = "select subject, name, score from scoreboard sb order by 1,3 desc;";
+        String sql = "select id, subject, name, score from scoreboard sb order by 1,3 desc;";
 
         try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement();
@@ -63,6 +74,7 @@ public class ScoreService {
 
             while (rs.next()) {
                 Map<String, Object> row = new HashMap<>();
+                row.put("id", rs.getString("id"));
                 row.put("name", rs.getString("name"));
                 row.put("subject", rs.getString("subject"));
                 row.put("score", rs.getInt("score"));
