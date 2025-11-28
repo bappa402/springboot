@@ -64,6 +64,20 @@ public class ScoreService {
         }
     }
 
+    public void updateScore(Long id, String name, String subject, int score) {
+        String sql = "UPDATE scoreboard SET name = ?, subject = ?, score = ? WHERE id = ?";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, name);
+            ps.setString(2, subject);
+            ps.setInt(3, score);
+            ps.setLong(4, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public List<Map<String, Object>> getAllScores() {
         List<Map<String, Object>> list = new ArrayList<>();
         String sql = "select id, subject, name, score from scoreboard sb order by 1,3 desc;";
@@ -86,6 +100,27 @@ public class ScoreService {
         }
 
         return list;
+    }
+
+    public Map<String, Object> getScoreById(Long id) {
+        String sql = "SELECT id, name, subject, score FROM scoreboard WHERE id = ?";
+        Map<String, Object> row = new HashMap<>();
+
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    row.put("id", rs.getLong("id"));
+                    row.put("name", rs.getString("name"));
+                    row.put("subject", rs.getString("subject"));
+                    row.put("score", rs.getInt("score"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return row;
     }
 
     public List<Map<String, Object>> getAvgScorePerSubject() {

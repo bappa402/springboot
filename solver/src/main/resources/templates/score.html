@@ -49,6 +49,13 @@
                         </button>
                     </form>
                 </td>
+                <td>
+                    <form th:action="@{/score/edit/{id}(id=${s.id})}" method="get">
+                        <button>
+                            edit
+                        </button>
+                    </form>
+                </td>
             </tr>
         </tbody>
     </table>

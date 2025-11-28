@@ -1,6 +1,9 @@
 package com.example.solver.controller;
 
 import com.example.solver.service.ScoreService;
+
+import java.util.Map;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +27,26 @@ public class ScoreController {
         model.addAttribute("avgScorePerSubject", scoreService.getAvgScorePerSubject());
         return "score"; // Thymeleaf template: score.html
     }
+
+    @GetMapping("/score/edit/{id}")
+    public String editScore(@PathVariable Long id, Model model) {
+    Map<String, Object> score = scoreService.getScoreById(id); // also JDBC
+    model.addAttribute("score", score);
+    return "edit_score";
+}
+
+
+    @PostMapping("/score/update/{id}")
+    public String updateScore(
+            @PathVariable Long id,
+            @RequestParam String name,
+            @RequestParam String subject,
+            @RequestParam int score
+    ) {
+        scoreService.updateScore(id, name, subject, score);
+        return "redirect:/score";
+    }
+
 
     @PostMapping("/score/save")
     public String saveScore(@RequestParam String name,

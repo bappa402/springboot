@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Scoreboard</title>
+
+    <!-- import next 2 lines in all pages -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+
+<body class="container mt-5">
+    <h1>Edit Score</h1>
+
+    <form th:action="@{/score/update/{id}(id=${score.id})}" method="post">
+
+    <input type="text" name="name" th:value="${score.name}" required>
+    <input type="text" name="subject" th:value="${score.subject}" required>
+    <input type="number" name="score" th:value="${score.score}" required>
+
+    <button type="submit">Update</button>
+</form>
