@@ -247,14 +247,14 @@ blockquote {
   margin: 1rem 0;
 }
 
-.bin-icon {
+.icon {
     width: 30px;
     height: 30px;
     cursor: pointer;
     transition: 0.2s ease;
 }
 
-.bin-icon:hover {
+.icon:hover {
     opacity: 0.7;
 }
 
@@ -283,7 +283,7 @@ blockquote {
     padding: 10px 18px;
   }
 
-  .bin-icon {
+  .icon {
     width: 20px;
     height: 20px;
     cursor: pointer;

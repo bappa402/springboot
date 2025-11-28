@@ -45,14 +45,14 @@
                 <td>
                     <form th:action="@{/score/delete/{id}(id=${s.id})}" method="post">
                         <button type="submit" style="background:none;border:none;padding:0;">
-                            <img th:src="@{/images/delete_icon2.png}" alt="Delete" class="bin-icon">
+                            <img th:src="@{/images/delete_icon2.png}" alt="Delete" class="icon">
                         </button>
                     </form>
                 </td>
                 <td>
                     <form th:action="@{/score/edit/{id}(id=${s.id})}" method="get">
-                        <button>
-                            edit
+                        <button type="submit" style="background:none;border:none;padding:0;">
+                            <img th:src="@{/images/edit_icon.png}" class="icon" alt="Edit">
                         </button>
                     </form>
                 </td>
