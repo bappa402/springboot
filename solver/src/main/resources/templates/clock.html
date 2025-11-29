@@ -28,29 +28,47 @@
     <hr>
 
     <!-- RESULTS -->
+    <!-- Message should ALWAYS show if mins is not null -->
     <div th:if="${mins != null}">
+
         <h2>Results</h2>
+        <p th:text="${msg}"></p>
 
-        <div th:each="min, iterStat : ${mins}" class="clock-block" th:data-hour="${hour}"
-            th:data-minute="${min.minuteValue}" style="margin-bottom: 30px;">
+        <!-- Card container -->
+        <div class="card-container">
 
-            <p th:text="${min.diff} + ' degrees at ' + ${hour} + ':' + ${min.minuteValue}"></p>
+            <!-- Each clock result becomes a card -->
+            <div class="card clock-js" th:each="min, iterStat : ${mins}" th:data-hour="${hour}"
+                th:data-minute="${min.minuteValue}">
+            
 
-            <!-- Clock will be inserted here -->
+                <p th:text="${min.diff} + ' degrees at ' + ${hour} + ':' + ${min.minuteValue}"></p>
+
+                <!-- Clock canvas will be drawn inside -->
+               
+
+            </div>
+
         </div>
+    </div>
+
+    <div class="buttons">
+        <a class="button" th:href="@{/}">Back to Home</a>
+        <a class="button" th:href="@{/clock}">Refresh</a>
     </div>
 
     <!-- JS Module -->
     <script type="module">
         import { drawRomanClock, computeBisectingSecond, normalize } from '/javascripts/romanClock.js';
 
-        // Find all clock containers
-        document.querySelectorAll('.clock-block').forEach(div => {
+        // Find all clock containers,
+        //keep js and css classes seperate, even for same html element
+        document.querySelectorAll('.clock-js').forEach(div => {
             const hour = parseInt(div.dataset.hour);
             const minute = parseInt(div.dataset.minute);
             const second = computeBisectingSecond(hour, minute);
 
-            drawRomanClock(div, hour, minute, second-30);
+            drawRomanClock(div, hour, minute, second - 30);
         });
     </script>
 

@@ -18,13 +18,17 @@ public class ClockController {
     @GetMapping("/clock")
     public String clockPage(Model model) {
         model.addAttribute("hour", 6);
-        model.addAttribute("tolerance", 2);
+        model.addAttribute("tolerance", 5);
         return "clock"; // Thymeleaf template: clock.html
     }
 
     @PostMapping("/clock/result")
     public String processClockResult(@RequestParam int hour, @RequestParam int tolerance, Model model) {
         List mins = scsrv.calculateClockHour(hour, tolerance);
+        System.out.println(mins);
+      
+        model.addAttribute("msg", "Found " + mins.size() + " times for hour " + hour + " with tolerance " + tolerance + " degrees.");
+        
         model.addAttribute("mins", mins);
         model.addAttribute("hour", hour);
         model.addAttribute("tolerance", tolerance);

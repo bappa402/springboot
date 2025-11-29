@@ -130,17 +130,16 @@ public class EquationSolverService {
         int hourValue = h % 12;
 
         for (int m = 0; m < 60; m++) {
-            int diff = Math.abs(30 * hourValue - 6 * m);
+            int diff = Math.abs(30 * hourValue + m / 2 - 6 * m);
             if (Math.abs(diff % 120) <= tolerance && Math.abs(diff) > tolerance) {
                 Map<String, Integer> map = new HashMap<>();
+                diff = diff > 180 ? 360 - diff : diff;
                 map.put("minuteValue", m);
                 map.put("diff", diff);
                 results.add(map);
             }
         }
-        if (results.size() > 0)
-            return results;
-        return null;
+        return results;
     }
 
 }

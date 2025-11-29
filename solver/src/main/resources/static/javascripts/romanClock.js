@@ -4,8 +4,8 @@ export function drawRomanClock(container, hours, mins, secs = null) {
     let canvas = div.querySelector("canvas");
     if (!canvas) {
         canvas = document.createElement("canvas");
-        canvas.width = 300;
-        canvas.height = 300;
+        canvas.width = 200;
+        canvas.height = 200;
         div.appendChild(canvas);
     }
 
