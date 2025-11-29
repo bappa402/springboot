@@ -1,8 +1,6 @@
 package com.example.solver.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class EquationSolverService {
 
@@ -35,7 +33,7 @@ public class EquationSolverService {
 
         double[] poly = Arrays.copyOf(coeffs, coeffs.length);
         msgs.add("Solving polynomial using Newton–Raphson method:");
-        //msgs.add(polynomialToString(poly));
+        // msgs.add(polynomialToString(poly));
 
         List<Double> roots = findAllRoots(poly, msgs);
 
@@ -126,5 +124,23 @@ public class EquationSolverService {
         return newPoly;
     }
 
-  
+    // new method for clock calculations
+    public List calculateClockHour(int h, int tolerance) {
+        List results = new ArrayList<>();
+        int hourValue = h % 12;
+
+        for (int m = 0; m < 60; m++) {
+            int diff = Math.abs(30 * hourValue - 6 * m);
+            if (Math.abs(diff % 120) <= tolerance && Math.abs(diff) > tolerance) {
+                Map<String, Integer> map = new HashMap<>();
+                map.put("minuteValue", m);
+                map.put("diff", diff);
+                results.add(map);
+            }
+        }
+        if (results.size() > 0)
+            return results;
+        return null;
+    }
+
 }

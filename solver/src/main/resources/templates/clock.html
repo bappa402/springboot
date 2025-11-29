@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>120 Degree Angle Finder</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Your CSS -->
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+
+<body>
+
+    <h1>120 Degree Angle Finder</h1>
+    <p>This tool helps you find minutes that form nearly 120 degrees with the hour hand.</p>
+
+    <form th:action="@{/clock/result}" method="post">
+        <label>Hour (1–12)</label>
+        <input type="number" name="hour" min="1" max="12" required th:value="${hour}" />
+
+        <label>Tolerance in degrees (1–10)</label>
+        <input type="number" name="tolerance" min="1" max="10" th:value="${tolerance}" />
+
+        <button type="submit">Find Minutes</button>
+    </form>
+
+    <hr>
+
+    <!-- RESULTS -->
+    <div th:if="${mins != null}">
+        <h2>Results</h2>
+
+        <div th:each="min, iterStat : ${mins}" class="clock-block" th:data-hour="${hour}"
+            th:data-minute="${min.minuteValue}" style="margin-bottom: 30px;">
+
+            <p th:text="${min.diff} + ' degrees at ' + ${hour} + ':' + ${min.minuteValue}"></p>
+
+            <!-- Clock will be inserted here -->
+        </div>
+    </div>
+
+    <!-- JS Module -->
+    <script type="module">
+        import { drawRomanClock, computeBisectingSecond, normalize } from '/javascripts/romanClock.js';
+
+        // Find all clock containers
+        document.querySelectorAll('.clock-block').forEach(div => {
+            const hour = parseInt(div.dataset.hour);
+            const minute = parseInt(div.dataset.minute);
+            const second = computeBisectingSecond(hour, minute);
+
+            drawRomanClock(div, hour, minute, second-30);
+        });
+    </script>
+
+</body>
+
+</html>
