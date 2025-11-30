@@ -45,7 +45,7 @@ public class SolverController {
 
     @GetMapping("/about")
     public String about(Model model) {
-        model.addAttribute("name", "বাপ্পা বাইন, City- কলকাতা 🏢🌆");
+        model.addAttribute("name", "Bappa Bain, City-Kolkata🏢🌆");
         return "about";
     }
 }

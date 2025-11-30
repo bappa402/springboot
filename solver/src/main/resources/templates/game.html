@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Coordinate Game</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+</head>
+
+<body>
+
+    <h2>Coordinate Game</h2>
+
+    <form id="coordForm">
+        X: <input type="number" id="x" /><br /><br />
+        Y: <input type="number" id="y" /><br /><br />
+        <button type="submit">Confirm</button>
+    </form>
+
+    <h3>Latest Broadcast:</h3>
+    <pre id="output">Waiting...</pre>
+
+    <script>
+        let stompClient = null;
+
+        // Fetch initial state
+        fetch("/game/state")
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById("output").textContent = JSON.stringify(data);
+            });
+
+
+        function connect() {
+            const socket = new SockJS('/ws');
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, () => {
+                stompClient.subscribe('/topic/coords', (msg) => {
+                    document.getElementById("output").textContent = msg.body;
+                });
+            });
+        }
+
+        document.getElementById("coordForm").addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const x = document.getElementById("x").value;
+            const y = document.getElementById("y").value;
+
+            fetch("/game/update", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ x, y })
+            });
+        });
+
+        connect();
+    </script>
+
+</body>
+
+</html>
