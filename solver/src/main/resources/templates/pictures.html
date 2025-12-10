@@ -15,6 +15,7 @@
     <p>Explore the collection of images related to old heritage and memories.</p>
 
     <button type="button" onclick="showForm()">Upload New Picture</button>
+    <button type="button" th:onclick="|window.location='@{/}'|">Back</button>
 
     <form th:action="@{/pictures/upload}" method="post" enctype="multipart/form-data" id="upload-form"
         style="display: none;">
