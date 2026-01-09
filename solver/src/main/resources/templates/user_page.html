@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  
+  <title>user page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Import generic CSS -->
+  <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+    <h1>User Page</h1>
+    <p th:text="${message}"></p>
+    <div th:if="${usertype}=='editor'">
+        <p>create user</p>
+        <form th:action="@{/create_user}" method="post">
+            <div>
+                <label for="new_username">New Username:</label>
+                <input type="text" id="new_username" name="new_username" required />
+            </div>
+            <div>
+                <label for="new_password">New Password:</label>
+                <input type="password" id="new_password" name="new_password" required />
+            </div>
+            <div>
+                <button type="submit">Create User</button>
+            </div>
+            <p th:text="${message2}"></p>
+        </form>
+    </div>
+
+    <a th:href="@{/login}" ><button style="background-color: brown;">logout</button></a>
+</body>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Scoreboard</title>
 
@@ -7,25 +8,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
 </head>
+
 <body class="container mt-5">
     <h1>Scoreboard</h1>
 
     <!-- Form to add a new score -->
     <form th:action="@{/score/save}" method="post" class="mb-4">
         <div class="mb-2">
-            <input type="text" name="name" placeholder="Name" class="form-control" required/>
+            <input type="text" name="name" placeholder="Name" class="form-control" required />
         </div>
         <div class="mb-2">
-            <input type="text" name="subject" placeholder="Subject" class="form-control" required/>
+            <input type="text" name="subject" placeholder="Subject" class="form-control" required />
         </div>
         <div class="mb-2">
-            <input type="number" name="score" placeholder="Score" class="form-control" required/>
+            <input type="number" name="score" placeholder="Score" class="form-control" required />
         </div>
         <button type="submit" class="btn btn-primary">Save</button>
     </form>
 
     <!-- Table to display all scores -->
-    <table class="table table-striped">
+    <br><br>
+    <h4>Scoreboard, sorted by scores subjectwise</h4>
+    <table>
         <thead>
             <tr>
                 <th>Name</th>
@@ -35,11 +39,44 @@
         </thead>
         <tbody>
             <tr th:each="s : ${scores}">
+                <td th:text="${s['subject']}"></td>
                 <td th:text="${s['name']}"></td>
+                <td th:text="${s['score']}"></td>
+                <td>
+                    <form th:action="@{/score/delete/{id}(id=${s.id})}" method="post">
+                        <button type="submit" style="background:none;border:none;padding:0;">
+                            <img th:src="@{/images/delete_icon2.png}" alt="Delete" class="icon">
+                        </button>
+                    </form>
+                </td>
+                <td>
+                    <form th:action="@{/score/edit/{id}(id=${s.id})}" method="get">
+                        <button type="submit" style="background:none;border:none;padding:0;">
+                            <img th:src="@{/images/edit_icon.png}" class="icon" alt="Edit">
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <!-- Table to display subject wise average scores -->
+    <h4>Subject wise average score</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>Subject</th>
+                <th> Avg Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="s : ${avgScorePerSubject}">
                 <td th:text="${s['subject']}"></td>
                 <td th:text="${s['score']}"></td>
             </tr>
         </tbody>
     </table>
 </body>
+
 </html>

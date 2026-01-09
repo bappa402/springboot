@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Tic Tac Toe</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <style>
+        table { border-collapse: collapse; }
+        td { width: 60px; height: 60px; text-align: center; font-size: 2em; border: 1px solid black; cursor: pointer; }
+    </style>
+</head>
+<body>
+<h2>Tic Tac Toe - Code: <span th:text="${code}"></span></h2>
+<p>Player: <span th:text="${player}"></span></p>
+
+<table id="board">
+    <tr><td data-row="0" data-col="0"></td><td data-row="0" data-col="1"></td><td data-row="0" data-col="2"></td></tr>
+    <tr><td data-row="1" data-col="0"></td><td data-row="1" data-col="1"></td><td data-row="1" data-col="2"></td></tr>
+    <tr><td data-row="2" data-col="0"></td><td data-row="2" data-col="1"></td><td data-row="2" data-col="2"></td></tr>
+</table>
+
+<script>
+    let player = /*[[${player}]]*/ 'X';
+    let code = /*[[${code}]]*/ '0000';
+
+    let socket = new SockJS(window.location.origin + '/ws');
+let stompClient = Stomp.over(socket);
+
+
+    stompClient.connect({}, function () {
+        stompClient.subscribe('/topic/game', function (message) {
+            let room = JSON.parse(message.body);
+            updateBoard(room.board);
+        });
+    });
+
+    function updateBoard(board) {
+        let cells = document.querySelectorAll('#board td');
+        cells.forEach(td => {
+            let row = td.dataset.row;
+            let col = td.dataset.col;
+            td.innerText = board[row][col] ? board[row][col] : '';
+        });
+    }
+
+    document.querySelectorAll('#board td').forEach(td => {
+        td.addEventListener('click', () => {
+            let row = td.dataset.row;
+            let col = td.dataset.col;
+            stompClient.send("/app/move", {}, JSON.stringify({code: code, row: row, col: col, player: player}));
+        });
+    });
+</script>
+</body>
+</html>

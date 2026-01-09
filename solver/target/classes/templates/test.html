@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  
+  <title>login page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Import generic CSS -->
+  <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+
+<body>
+    <h1>hi bappa</h1>
+
+    <form method="post" th:action="@{/showNeighbours}">
+      <label>enter your location code</label>
+      <input type="text" name="loc_code" th:value="${loc_code}">
+      <label>describe what you need:</label>
+      <input type="text" name="msg">
+      <label>search within:</label>
+      <input type="text" name="range" th:value="${range}">
+      <button type="submit">check</button>
+    </form>
+
+    <div th:text="${key}"></div>
+    <div th:text="${dbOutput}"></div>
+</body>

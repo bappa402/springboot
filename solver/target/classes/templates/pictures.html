@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+
+    <title>Old pics Gallery</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Import generic CSS -->
+    <link rel="stylesheet" th:href="@{/css/gallery_style.css}" />
+</head>
+
+<body>
+    <h1>Picture Gallery</h1>
+    <p>Explore the collection of images related to old heritage and memories.</p>
+
+    <button type="button" onclick="showForm()">Upload New Picture</button>
+    <button type="button" th:onclick="|window.location='@{/}'|">Back</button>
+
+    <form th:action="@{/pictures/upload}" method="post" enctype="multipart/form-data" id="upload-form"
+        style="display: none;">
+
+        <input type="file" name="image" />
+        <input type="text" name="title" value="title sample" />
+        <input type="text" name="picLocation" value="location-kolkata" />
+        <input type="text" name="picDate" value="2025-12-15 14:30:00" />
+
+        <button type="submit">Upload Picture</button>
+    </form>
+
+    <script>
+        function showForm() {
+            document.getElementById('upload-form').style.display = 'block';
+        }
+    </script>
+
+
+    <div class="gallery">
+        <div th:each="picture : ${pictures}">
+            <img th:src="'data:image/png;base64,' + ${picture.imageBase64}" th:alt="${picture.title}" />
+            <p th:text="${picture.title}"></p>
+            <p th:text="${picture.pic_date}"></p>
+            <p th:text="${picture.pic_location}"></p>
+        </div>
+    </div>
+
+</body>
