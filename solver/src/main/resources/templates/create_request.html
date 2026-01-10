@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+
+    <title>create request page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Import generic CSS -->
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+
+<body>
+    <h1>hi bappa</h1>
+
+    <form method="post" th:action="@{/save_request}">
+        <label>enter your location code</label>
+        <input type="text" name="loc_code" th:value="${loc_code}">
+        <label>describe what you need:</label>
+        <input type="text" name="msg">
+        <label>contact (mobile no/email/fb/insta id)</label>
+        <input type="text" name="contact">
+        <label>request validity duration(mins)</label>
+        <input type="text" name="duration" th:value="${duration}">
+        <button type="submit">check</button>
+    </form>
+
+    <a class="button" th:href="@{/view_requests}" style="background-color: brown;">view requests</a>
+
+    <div th:text="${status_text}"></div>
+</body>

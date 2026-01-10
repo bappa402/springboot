@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+
+    <title>view requests page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Import generic CSS -->
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+
+<body>
+    <h1>view requests page</h1>
+
+    <form method="post" th:action="@{/display_requests}">
+        <label>filter by location code:</label>
+        <input name="loc_code">
+        <label>filter by contact info:</label>
+        <input name="contact">
+        <button type="submit">search</button>
+
+    </form>
+
+    <div th:if="${requests != null}">
+        <table>
+            <thead>
+                <tr>
+                    
+                    <th>Message</th>
+                    <th>Location Code</th>
+                    <th>Contact</th>
+                    <th>Duration (mins)</th>
+                    <th>Tip Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="request : ${requests}">
+                    <td th:text="${request['request_text']}"></td>
+                    <td th:text="${request['location_coordinates']}"></td>
+                    <td th:text="${request['contact']}"></td>
+                    <td th:text="${request['request_expiry_duration']}"></td>
+                    <td th:text="${request['tip_amount']}"></td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <a class="button" th:href="@{/create_request}" style="background-color: brown;">create request</a>
